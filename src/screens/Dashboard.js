@@ -32,12 +32,9 @@ export default function Dashboard({ navigation }) {
           labelStyle={{ color: 'white' }}
           color="#581845"
           mode="contained"
-          onPress={() =>
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Profile' }],
-            })
-          }
+          onPress={() => navigation.navigate('Profile')}
+
+
         >
           Profile
         </Button>
@@ -46,12 +43,8 @@ export default function Dashboard({ navigation }) {
           labelStyle={{ color: 'white' }}
           color="#900c3f"
           mode="contained"
-          onPress={() =>
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'AddBook' }],
-            })
-          }
+          onPress={() => navigation.navigate('AddBook')}
+
         >
           Add New Book
         </Button>
@@ -61,12 +54,8 @@ export default function Dashboard({ navigation }) {
           labelStyle={{ color: 'white' }}
           mode="contained"
           color="#C70039"
-          onPress={() =>
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'MyBooks' }],
-            })
-          }
+          onPress={() => navigation.navigate('MyBooks')}
+
         >
           My Books
         </Button>
@@ -75,12 +64,8 @@ export default function Dashboard({ navigation }) {
           labelStyle={{ color: 'white' }}
           mode="contained"
           color="#FFC300"
-          onPress={() =>
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Blog' }],
-            })
-          }
+          onPress={() => navigation.navigate('Blog')}
+
         >
           Blog
         </Button>
