@@ -11,7 +11,7 @@ export default function StartScreen({ navigation }) {
       <Logo />
       <Header>Welcome</Header>
       <Paragraph>
-       <b>If you have an account please log in.</b>
+       If you have an account please log in.
       </Paragraph>
       <Button
         mode="contained"
@@ -20,8 +20,7 @@ export default function StartScreen({ navigation }) {
         Login
       </Button>
       <Paragraph>
-
-       <b>If you don't have an account click here for start the journey.</b>
+        If you don't have an account click here for start the journey.
       </Paragraph>
       <Button
         mode="contained"

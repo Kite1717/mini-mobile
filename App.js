@@ -15,6 +15,7 @@ import {
   AddBook,
   BookEx,
   Chart,
+  Exercise,
 } from './src/screens'
 
 const Stack = createStackNavigator()
@@ -24,7 +25,7 @@ export default function App() {
     <Provider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Dashboard"
+          initialRouteName="StartScreen"
           screenOptions={{
             headerShown: false,
           }}
@@ -39,6 +40,7 @@ export default function App() {
           <Stack.Screen name="AddBook" component={AddBook} />
           <Stack.Screen name="BookExercises" component={BookEx} />
           <Stack.Screen name="Chart" component={Chart} />
+          <Stack.Screen name="Exercise" component={Exercise} />
           <Stack.Screen
             name="ResetPasswordScreen"
             component={ResetPasswordScreen}

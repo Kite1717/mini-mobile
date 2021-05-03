@@ -13,7 +13,7 @@ export default function BookEx({ navigation }) {
     return (
 
       <View style={styles.container}>
-         <TouchableOpacity onPress={ () =>navigation.navigate('BookExercises')}>
+         <TouchableOpacity onPress={ () =>navigation.navigate('Exercise')}>
         <View style={styles.bookContainer}>
           <Icon
             name='bookmark'

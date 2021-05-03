@@ -9,12 +9,8 @@ import { BarChart, Grid } from 'react-native-svg-charts'
 import { Text as TextS } from 'react-native-svg'
 
 
-const screenWidth = Dimensions.get("window").width;
-
 
 export default function BookEx({ navigation }) {
-
-
 
   const data = [10, 5, 25, 15, 20]
 
@@ -35,6 +31,39 @@ export default function BookEx({ navigation }) {
     ))
   )
 
+
+
+  const renderItem = ({ item }) => {
+
+    return (
+      <View style={styles.blogContainer}>
+      <Text style ={styles.title}>{item.title}</Text>
+      <View style={styles.sep}></View>
+      <Text style = {styles.des}>{item.des}</Text>
+      </View>
+    );
+  };
+
+
+  const DATA = [
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      title: 'Dil Becerisi',
+      des:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      title: 'Eşleştirme',
+      des:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+
+    },
+    {
+      id: '58694a0f-3da1-471f-bd96-145571e29d72',
+      title: 'Görsel Zeka',
+      des:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+
+    },
+  ];
 
 
   return (
@@ -60,6 +89,12 @@ export default function BookEx({ navigation }) {
 
 
       </View>
+
+      <FlatList
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
 
     </Background>
   )
@@ -89,10 +124,12 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 1,
     marginVertical: 5,
-    backgroundColor: "grey"
+    backgroundColor: "red",
+    marginBottom:7
   },
   title: {
     fontSize: 17,
+    color:'red',
 
   },
   line: {
