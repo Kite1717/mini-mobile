@@ -8,3 +8,7 @@ export { default as AddBook } from './AddBook'
 export { default as Blog } from './Blog'
 export { default as Profile } from './Profile'
 export { default as MyBooks } from './MyBooks'
+export { default as BookEx } from './BookEx'
+export { default as Chart } from './Chart'
+
+

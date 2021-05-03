@@ -13,6 +13,8 @@ import {
   Blog,
   Profile,
   AddBook,
+  BookEx,
+  Chart,
 } from './src/screens'
 
 const Stack = createStackNavigator()
@@ -35,6 +37,8 @@ export default function App() {
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="Blog" component={Blog} />
           <Stack.Screen name="AddBook" component={AddBook} />
+          <Stack.Screen name="BookExercises" component={BookEx} />
+          <Stack.Screen name="Chart" component={Chart} />
           <Stack.Screen
             name="ResetPasswordScreen"
             component={ResetPasswordScreen}

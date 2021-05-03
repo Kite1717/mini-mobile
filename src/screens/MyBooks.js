@@ -3,14 +3,16 @@ import Background from '../components/Background'
 import Header from '../components/Header'
 import BackButton from '../components/BackButton'
 import { Icon } from 'react-native-elements'
-import { FlatList,View,Text,StyleSheet} from 'react-native'
+import { FlatList,View,Text,StyleSheet,SafeAreaView,TouchableOpacity,StatusBar} from 'react-native'
 
 export default function MyBooks({ navigation }) {
 
   const renderItem = ({ item }) => {
 
     return (
+    
       <View style={styles.container}>
+          <TouchableOpacity onPress={ () =>navigation.navigate('BookExercises')}>
         <View style={styles.bookContainer}>
 
         <Icon
@@ -24,7 +26,9 @@ export default function MyBooks({ navigation }) {
         </View>
         
       <View style = {styles.sep}></View>
+      </TouchableOpacity>
       </View>
+
     );
   };
 
@@ -49,11 +53,15 @@ export default function MyBooks({ navigation }) {
     <Background >
       <BackButton goBack={navigation.goBack} />
       <Header>My Books</Header>
+      <SafeAreaView style={styles.container}>
       <FlatList
         data={DATA}
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
+
+      </SafeAreaView>
+    
     </Background>
   )
 }
@@ -79,6 +87,10 @@ const styles = StyleSheet.create({
     height:1,
     marginVertical:5,
     backgroundColor:"grey"
+  },
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
   },
 
 
