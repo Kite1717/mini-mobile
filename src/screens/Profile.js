@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Background from '../components/Background'
 import Logo from '../components/Logo'
 import Header from '../components/Header'
@@ -8,55 +8,119 @@ import Button from '../components/Button'
 import { Text, View, StyleSheet ,Alert} from 'react-native'
 
 
+import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+
 export default function Profile({ navigation }) {
 
+  const [user,setUser]  =useState(null);
   const [oldPass, setOldPass] = useState({ value: '', error: '' })
   const [newPass, setNewPass] = useState({ value: '', error: '' })
   const [reNewPass, setReNewPass] = useState({ value: '', error: '' })
 
 
 
+
+  useEffect(() => {
+
+    getInfo()
+  }, [])
+
+  const getInfo =  async() =>{
+    const token = await AsyncStorage.getItem("@token")
+    console.log(token,"wwwwww")
+    if(token !== null)
+    {
+
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+
+      axios.get("http://localhost:4000/api/user/me",config).then(({data})=>{
+  
+      setUser(data.user)
+      })
+    }
+   
+  }
   // change password process
-  const changePassword = () => {
+  const changePassword = async () => {
 
     // #TODO  CONTROL Validations
 
-   /* const emailError = emailValidator(email.value)
-    const passwordError = passwordValidator(password.value)
-    if (emailError || passwordError) {
-      setEmail({ ...email, error: emailError })
-      setPassword({ ...password, error: passwordError })
-      return
-    }
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Dashboard' }],
-    }) */
+  
 
-    Alert.alert(
-      "Success",
-      "Your password has been changed successfuly",
-      [
-        { text: "OK", onPress: () => {
-          navigation.reset({
-            index: 0,
-            routes: [{ name: 'Dashboard' }],
-          })
+    if(newPass.value !== reNewPass.value)
+    {
+
+      Alert.alert(
+        "Error",
+        "No matching  new password and re new password"
+      );
+    }
+    else if(newPass.value  === "" || reNewPass.value  === "" || oldPass.value === "")
+    {
+      Alert.alert(
+        "Error",
+        "Please fill the all fields"
+      );
+    }
+    else{
+      const token = await AsyncStorage.getItem("@token")
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+      axios.put("http://localhost:4000/api/user/change-password",{
+        oldPass : oldPass.value,
+        newPass : newPass.value,
+      },config).then(async (res)=>{
+        
+       // await AsyncStorage.setItem("@token",res.data.token)
+
+       setNewPass({ value: '', error: '' })
+       setReNewPass({ value: '', error: '' })
+       setOldPass({ value: '', error: '' })
+        Alert.alert(
+          "Success",
+          "Your password has been changed successfuly",
+          [
+            { text: "OK", onPress: () => {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Dashboard' }],
+              })
+          
+            } }
+          ]
+        );
       
-        } }
-      ]
-    );
+
+      }).catch((err)=>{
+
+
+      Alert.alert(
+        "Error",
+        "Something went wrong",
+      );
+
+      })
+
+    }
+
+    
   }
 
   return (
-    <Background>
+    <Background  navigation ={navigation}>
       <BackButton goBack={navigation.goBack} />
       <Logo />
       <Header>Profile</Header>
 
       <View>
-        <Text style={styles.text}>Username : lorem ıpsum</Text>
-        <Text style={styles.text}>E-mail : example@example.com</Text>
+        <Text style={styles.text}>Username : {user?.username}</Text>
+        <Text style={styles.text}>E-mail : {user?.email}</Text>
       </View>
 
       <Text style = {styles.title}>Change Password</Text>

@@ -50,7 +50,7 @@ export default function MyBooks({ navigation }) {
     },
   ];
   return (
-    <Background >
+    <Background  navigation ={navigation}>
       <BackButton goBack={navigation.goBack} />
       <Header>My Books</Header>
       <SafeAreaView style={styles.container}>

@@ -18,7 +18,7 @@ export default function AddBook({ navigation }) {
     //console.log("code saving process")
   }
   return (
-    <Background>
+    <Background navigation ={navigation}>
       <BackButton goBack={navigation.goBack} />
       <Logo />
       <Header>Add Book page</Header>
@@ -74,7 +74,11 @@ export default function AddBook({ navigation }) {
           <View style={styles.modalView}>
 
 
-            <TextInput
+           {
+             /*
+
+
+             <TextInput
               label="Code"
               returnKeyType="done"
               value={code.value}
@@ -98,6 +102,31 @@ export default function AddBook({ navigation }) {
               </Pressable>
             </View>
 
+              */
+           } 
+            <TextInput
+              label="Code"
+              returnKeyType="done"
+              value={code.value}
+              onChangeText={(text) => setCode({ value: text, error: '' })}
+              error={!!code.error}
+              errorText={code.error}
+              autoCapitalize="none"
+            />
+           
+
+             <Pressable
+                onPress={saveCode}
+              >
+                <Text style={styles.textStyle}>Save</Text>
+              </Pressable>
+
+              <Pressable
+                onPress={() => setShowmodal(!showModal)}
+              >
+                <Text style={styles.textStyle}>Cancel</Text>
+              </Pressable>
+           
 
           </View>
         </View>
@@ -110,6 +139,7 @@ export default function AddBook({ navigation }) {
 
 const styles = StyleSheet.create({
   centeredView: {
+   
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -117,6 +147,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
+    width:"90%",
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -145,8 +176,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-    display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'center'
   }
 
 

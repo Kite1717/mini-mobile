@@ -41,7 +41,7 @@ export default function Blog({ navigation }) {
     },
   ];
   return (
-    <Background>
+    <Background navigation ={navigation}>
       <BackButton goBack={navigation.goBack} />
       <Header>Blog</Header>
       <FlatList

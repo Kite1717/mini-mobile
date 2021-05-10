@@ -67,7 +67,7 @@ export default function BookEx({ navigation }) {
 
 
   return (
-    <Background >
+    <Background navigation ={navigation}>
       <BackButton goBack={navigation.goBack} />
       <Header>MİNİPOİ 2-3 YAŞ KİTABI</Header>
       <Text style={styles.title}>Progress Chart</Text>

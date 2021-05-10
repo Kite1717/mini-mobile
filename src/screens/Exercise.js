@@ -8,7 +8,7 @@ import { Icon } from 'react-native-elements'
 
 export default function Exercise({ navigation }) {
   return (
-    <Background>
+    <Background navigation ={navigation}>
       <BackButton goBack={navigation.goBack} />
       <Header>1. Etkinlik</Header>
 

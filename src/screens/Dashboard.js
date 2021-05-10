@@ -9,7 +9,7 @@ import { View, StyleSheet } from 'react-native'
 
 export default function Dashboard({ navigation }) {
   return (
-    <Background>
+    <Background navigation ={navigation}>
       <Logo />
       <Header>Home Page</Header>
       <Paragraph>Welcome Minipoi</Paragraph>
