@@ -1,14 +1,12 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import Background from '../components/Background'
 import Header from '../components/Header'
 import BackButton from '../components/BackButton'
-import { FlatList,View,Text,StyleSheet} from 'react-native'
+import { FlatList,View,Text,StyleSheet,ActivityIndicator} from 'react-native'
+
+import axios from 'axios'
+
 export default function Blog({ navigation }) {
-
-
-
-
-
   const renderItem = ({ item }) => {
 
     return (
@@ -21,33 +19,31 @@ export default function Blog({ navigation }) {
   };
 
 
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'Lorem Ipsum',
-      des:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Lorem Ipsum',
-      des:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+  
+  const [data,setData] = useState([])
+  const [loading,setLoading] = useState(true)
+  useEffect(() => {
 
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Lorem Ipsum',
-      des:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    axios.get("https://mini-back-12.herokuapp.com/api/blog").then(({data})=>{
 
-    },
-  ];
+    setData(data.blogs)
+    setLoading(false)
+    })
+
+  }, [])
+
   return (
     <Background navigation ={navigation}>
+
       <BackButton goBack={navigation.goBack} />
       <Header>Blog</Header>
+      {loading &&
+        <ActivityIndicator />
+      }
       <FlatList
-        data={DATA}
+        data={data}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id + "-blog"}
       />
     </Background>
   )

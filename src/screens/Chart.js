@@ -2,33 +2,35 @@ import React from 'react'
 import Background from '../components/Background'
 import Header from '../components/Header'
 import BackButton from '../components/BackButton'
-import { FlatList, View, Text, StyleSheet, Dimensions } from 'react-native'
+import { FlatList, View, Text, StyleSheet } from 'react-native'
 
 
 import { BarChart, Grid } from 'react-native-svg-charts'
-import { Text as TextS } from 'react-native-svg'
+import { Text as TextSVG } from 'react-native-svg'
 
 
 
 export default function BookEx({ navigation }) {
 
-  const data = [10, 5, 25, 15, 20]
 
-  const CUT_OFF = 20
-  const Labels = ({ x, y, bandwidth, data }) => (
-    data.map((value, index) => (
-      <TextS
-        key={index}
-        x={x(index) + (bandwidth / 2)}
-        y={value < CUT_OFF ? y(value) - 10 : y(value) + 15}
-        fontSize={14}
-        fill={value >= CUT_OFF ? 'white' : 'black'}
-        alignmentBaseline={'middle'}
-        textAnchor={'middle'}
-      >
-        {value}
-      </TextS>
-    ))
+  
+  const data = [ 50, 10, 40, 95, 85 ]  
+  const dataLabel = [ "test 1","test 2","test 3","test 4","test 5",]
+
+  const CUT_OFF = 50
+  const Labels = ({  x, y, bandwidth, data }) => (
+      data.map((value, index) => (
+          <TextSVG
+              key={ index }
+              x={ value > CUT_OFF ? x(0) + 10 : x(value) + 10 }
+              y={ y(index) + (bandwidth / 2) }
+              fontSize={ 14 }
+              fill={ value > CUT_OFF ? 'white' : 'black' }
+              alignmentBaseline={ 'middle' }
+          >
+              {dataLabel[index] + " : " +value +" Puan"}
+          </TextSVG>
+      ))
   )
 
 
@@ -75,21 +77,19 @@ export default function BookEx({ navigation }) {
 
 
       <View style={{ flexDirection: 'row', height: 200, paddingVertical: 16 }}>
-        <BarChart
-          style={{ flex: 1 }}
-          data={data}
-          svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
-          contentInset={{ top: 10, bottom: 10 }}
-          spacing={0.2}
-          gridMin={0}
-        >
-          <Grid direction={Grid.Direction.HORIZONTAL} />
-          <Labels />
-        </BarChart>
-
-
-      </View>
-
+                <BarChart
+                    style={{ flex: 1, marginLeft: 8 }}
+                    data={data}
+                    horizontal={true}
+                    svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
+                    contentInset={{ top: 10, bottom: 10 }}
+                    spacing={0.2}
+                    gridMin={0}
+                >
+                    <Grid direction={Grid.Direction.VERTICAL}/>
+                    <Labels/>
+                </BarChart>
+            </View>
       <FlatList
         data={DATA}
         renderItem={renderItem}
