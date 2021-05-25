@@ -1,10 +1,11 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import Background from '../components/Background'
 import Header from '../components/Header'
 import BackButton from '../components/BackButton'
 import { Icon } from 'react-native-elements'
 import { FlatList,View,Text,StyleSheet,SafeAreaView,TouchableOpacity,StatusBar} from 'react-native'
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'
 export default function MyBooks({ navigation }) {
 
   const renderItem = ({ item }) => {
@@ -22,7 +23,7 @@ export default function MyBooks({ navigation }) {
       />
 
 
-      <Text style ={styles.title}>{item.title}</Text>
+      <Text style ={styles.title}>{item.books.bookName}</Text>
         </View>
         
       <View style = {styles.sep}></View>
@@ -33,31 +34,54 @@ export default function MyBooks({ navigation }) {
   };
 
 
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'MİNİPOİ 2-3 YAŞ KİTABI',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'MİNİPOİ 2-3 YAŞ KİTABI',
+  const [data,setData]  =useState([])
 
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'MİNİPOİ 2-3 YAŞ KİTABI',
+  useEffect(() => {
+    getInfo()
 
-    },
-  ];
+     
+
+
+  }, [])
+
+
+
+  const getInfo =  async() =>{
+    const token = await AsyncStorage.getItem("@token")
+    if(token !== null)
+    {
+
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+
+       axios.get("http://localhost:4000/api/user/me",config).then((res)=>{
+
+       let id = res.data.user.id
+       console.log(id,"wwww")
+        axios.get("http://localhost:4000/api/book/" + id).then(({data})=>{
+
+
+        console.log(data,"wwwwww")
+     
+          setData(data.ubook)
+         
+        })
+      
+      })
+    }
+   
+  }
+
   return (
     <Background  navigation ={navigation}>
       <BackButton goBack={navigation.goBack} />
       <Header>My Books</Header>
       <SafeAreaView style={styles.container}>
       <FlatList
-        data={DATA}
+        data={data}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.books.id}
       />
 
       </SafeAreaView>

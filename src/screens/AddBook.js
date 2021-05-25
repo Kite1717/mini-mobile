@@ -6,16 +6,59 @@ import BackButton from '../components/BackButton'
 import Button from '../components/Button'
 import { Icon } from 'react-native-elements'
 import TextInput from '../components/TextInput'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'
 
 import { StyleSheet, Modal, View,Pressable ,Text} from 'react-native'
 export default function AddBook({ navigation }) {
   const [showModal, setShowmodal] = useState(false)
 
-
+  const [user,setUser]  =useState(null);
   const [code, setCode] = useState({ value: '', error: '' })
 
+  const [msg,setMsg] =useState(null)
+
   const saveCode = () =>{
-    //console.log("code saving process")
+
+    getInfo().then(()=>{
+      let postData ={
+          code : code.value,
+          userId:user.id
+      }
+      axios.post("http://localhost:4000/api/code/add-book",postData).then(({data})=>{
+
+     
+       if(data.msg==="success")
+       {
+         setMsg("Kitabınız aktif edilmiştir")
+       }
+       else{
+         setMsg("Bu kod daha önce kullanılmıştır.")
+       }
+
+       setShowmodal(!showModal)
+       setCode({ value: '', error: '' })
+        })
+
+    })
+    
+  }
+
+  const getInfo =  async() =>{
+    const token = await AsyncStorage.getItem("@token")
+    if(token !== null)
+    {
+
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+
+      await axios.get("http://localhost:4000/api/user/me",config).then(({data})=>{
+  
+      setUser(data.user)
+      })
+    }
+   
   }
   return (
     <Background navigation ={navigation}>
@@ -104,6 +147,13 @@ export default function AddBook({ navigation }) {
 
               */
            } 
+           {
+             msg &&
+             
+              <Text style={styles.textStyle}>{msg}</Text>
+             
+           }
+           
             <TextInput
               label="Code"
               returnKeyType="done"

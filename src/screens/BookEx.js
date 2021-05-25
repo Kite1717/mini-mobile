@@ -34,43 +34,18 @@ export default function BookEx({ navigation }) {
   const DATA = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: '1. Exercise',
+      title: 'DİL BECERİSİ',
     },
     {
-      id: '2',
-      title: '2. Exercise',
-
+      id: 'asd-c1b1-46c2-aed5-3ad53abb28ba',
+      title: 'BÜTÜNSEL & GÖRSEL ALGI',
     },
     {
-      id: '3',
-      title: '3. Exercise',
-
+      id: 'bd7acbasdasdea-c1b1-46c2-aed5-3ad53abb28ba',
+      title: 'UZUN SÜRELİ DİKKAT ',
     },
-    {
-      id: '4',
-      title: '4. Exercise',
 
-    },
-    {
-      id: '5',
-      title: '5. Exercise',
-
-    },
-    {
-      id: '6',
-      title: '6. Exercise',
-
-    },
-    {
-      id: '7',
-      title: '7. Exercise',
-
-    },
-    {
-      id: '8',
-      title: '8. Exercise',
-
-    },
+   
   ];
   return (
     <Background navigation ={navigation}>

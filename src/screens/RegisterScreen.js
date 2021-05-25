@@ -45,7 +45,7 @@ export default function RegisterScreen({ navigation }) {
     }
 
 
-    axios.post("https://mini-back-12.herokuapp.com/api/user/register",data).then((res)=>{
+    axios.post("http://localhost:4000/api/user/register",data).then((res)=>{
 
 
     storeData("@token",res.data.token).then(()=>{
