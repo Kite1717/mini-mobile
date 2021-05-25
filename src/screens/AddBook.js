@@ -25,7 +25,7 @@ export default function AddBook({ navigation }) {
           code : code.value,
           userId:user.id
       }
-      axios.post("http://localhost:4000/api/code/add-book",postData).then(({data})=>{
+      axios.post("https://mini-back-12.herokuapp.com/api/code/add-book",postData).then(({data})=>{
 
      
        if(data.msg==="success")
@@ -53,7 +53,7 @@ export default function AddBook({ navigation }) {
         headers: { Authorization: `Bearer ${token}` }
       };
 
-      await axios.get("http://localhost:4000/api/user/me",config).then(({data})=>{
+      await axios.get("https://mini-back-12.herokuapp.com/api/user/me",config).then(({data})=>{
   
       setUser(data.user)
       })

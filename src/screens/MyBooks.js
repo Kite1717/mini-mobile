@@ -55,11 +55,11 @@ export default function MyBooks({ navigation }) {
         headers: { Authorization: `Bearer ${token}` }
       };
 
-       axios.get("http://localhost:4000/api/user/me",config).then((res)=>{
+       axios.get("https://mini-back-12.herokuapp.com/api/user/me",config).then((res)=>{
 
        let id = res.data.user.id
        console.log(id,"wwww")
-        axios.get("http://localhost:4000/api/book/" + id).then(({data})=>{
+        axios.get("https://mini-back-12.herokuapp.com/api/book/" + id).then(({data})=>{
 
 
         console.log(data,"wwwwww")
