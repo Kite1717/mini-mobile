@@ -6,8 +6,10 @@ import { Icon } from 'react-native-elements'
 import { FlatList,TouchableOpacity, View, Text, StyleSheet ,SafeAreaView,StatusBar} from 'react-native'
 import Button from '../components/Button'
 
-export default function BookEx({ navigation }) {
+export default function BookEx({ route, navigation }) {
 
+  const { bookId } = route.params;
+  console.log(bookId,"asjkdgkhaskghfdgkasgdas")
   const renderItem = ({ item }) => {
 
     return (

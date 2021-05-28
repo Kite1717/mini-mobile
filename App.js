@@ -16,6 +16,8 @@ import {
   BookEx,
   Chart,
   Exercise,
+  QrCode
+
 } from './src/screens'
 import { ActivityIndicator,StyleSheet,View} from 'react-native'
 
@@ -34,14 +36,14 @@ export default function App() {
       const value = await AsyncStorage.getItem("@token")
       if(value !== null) {  // eğer token varsa dashboarda
 
-console.log(value)
+
 setRouteUrl("Dashboard")
         
       }
       else{  // eğer token yoksa  login ekranına
         setRouteUrl("StartScreen")
         
-        console.log("asdasdasd")
+    
       }
     } catch(e) {
       console.log(e)
@@ -85,6 +87,7 @@ setRouteUrl("Dashboard")
               <Stack.Screen name="BookExercises" component={BookEx} />
               <Stack.Screen name="Chart" component={Chart} />
               <Stack.Screen name="Exercise" component={Exercise} />
+              <Stack.Screen name="QR" component={QrCode} />
               <Stack.Screen
                 name="ResetPasswordScreen"
                 component={ResetPasswordScreen}

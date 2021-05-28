@@ -13,7 +13,7 @@ export default function MyBooks({ navigation }) {
     return (
     
       <View style={styles.container}>
-          <TouchableOpacity onPress={ () =>navigation.navigate('BookExercises')}>
+          <TouchableOpacity onPress={ () =>navigation.navigate('BookExercises',{ bookId: item.books.id })}>
         <View style={styles.bookContainer}>
 
         <Icon
@@ -58,11 +58,11 @@ export default function MyBooks({ navigation }) {
        axios.get("https://mini-back-12.herokuapp.com/api/user/me",config).then((res)=>{
 
        let id = res.data.user.id
-       console.log(id,"wwww")
+
         axios.get("https://mini-back-12.herokuapp.com/api/book/" + id).then(({data})=>{
 
 
-        console.log(data,"wwwwww")
+
      
           setData(data.ubook)
          
@@ -81,7 +81,7 @@ export default function MyBooks({ navigation }) {
       <FlatList
         data={data}
         renderItem={renderItem}
-        keyExtractor={item => item.books.id}
+        keyExtractor={item => item.id +"-book"}
       />
 
       </SafeAreaView>

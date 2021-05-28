@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Background from '../components/Background'
 import Logo from '../components/Logo'
 import Header from '../components/Header'
@@ -9,62 +9,70 @@ import TextInput from '../components/TextInput'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
 
-import { StyleSheet, Modal, View,Pressable ,Text} from 'react-native'
+import { BarCodeScanner } from 'expo-barcode-scanner';
+
+import { StyleSheet, Modal, View, Pressable, Text } from 'react-native'
 export default function AddBook({ navigation }) {
   const [showModal, setShowmodal] = useState(false)
 
-  const [user,setUser]  =useState(null);
+  const [user, setUser] = useState(null);
   const [code, setCode] = useState({ value: '', error: '' })
 
-  const [msg,setMsg] =useState(null)
+  const [msg, setMsg] = useState("")
 
-  const saveCode = () =>{
 
-    getInfo().then(()=>{
-      let postData ={
-          code : code.value,
-          userId:user.id
+
+
+
+  const saveCode = () => {
+    getInfo().then(() => {
+      let postData = {
+        code: code.value,
+        userId: user.id
       }
-      axios.post("https://mini-back-12.herokuapp.com/api/code/add-book",postData).then(({data})=>{
+      axios.post("https://mini-back-12.herokuapp.com/api/code/add-book", postData).then(({ data }) => {
 
-     
-       if(data.msg==="success")
-       {
-         setMsg("Kitabınız aktif edilmiştir")
-       }
-       else{
-         setMsg("Bu kod daha önce kullanılmıştır.")
-       }
-
-       setShowmodal(!showModal)
-       setCode({ value: '', error: '' })
-        })
+        if (data.msg === "success") {
+          setMsg("Kitabınız aktif edilmiştir")
+        }
+        else {
+          setMsg("Bu kod daha önce kullanılmıştır.")
+        }
+        setCode({ value: '', error: '' })
+      })
 
     })
-    
+
   }
 
-  const getInfo =  async() =>{
+  const getInfo = async () => {
     const token = await AsyncStorage.getItem("@token")
-    if(token !== null)
-    {
+    if (token !== null) {
 
       const config = {
         headers: { Authorization: `Bearer ${token}` }
       };
 
-      await axios.get("https://mini-back-12.herokuapp.com/api/user/me",config).then(({data})=>{
-  
-      setUser(data.user)
+      await axios.get("https://mini-back-12.herokuapp.com/api/user/me", config).then(({ data }) => {
+
+        setUser(data.user)
       })
     }
-   
+
+  }
+
+  const cancelModal = ()=>{
+
+    setShowmodal(false)
+    setMsg('')
   }
   return (
-    <Background navigation ={navigation}>
+    <Background navigation={navigation}>
       <BackButton goBack={navigation.goBack} />
       <Logo />
       <Header>Add Book page</Header>
+
+
       <Icon
         name='qrcode'
         type='font-awesome'
@@ -78,7 +86,7 @@ export default function AddBook({ navigation }) {
         color="#33C7FF"
         mode="contained"
         onPress={() =>
-        console.log("qr-code processing....")
+         navigation.navigate('QR')
         }
       >
         Scan QR Code
@@ -117,43 +125,39 @@ export default function AddBook({ navigation }) {
           <View style={styles.modalView}>
 
 
-           {
-             /*
+            {
+              /*
+ 
+ 
+              <TextInput
+               label="Code"
+               returnKeyType="done"
+               value={code.value}
+               onChangeText={(text) => setCode({ value: text, error: '' })}
+               error={!!code.error}
+               errorText={code.error}
+               autoCapitalize="none"
+             />
+             <View style={styles.buttonContainer}>
+ 
+               <Pressable
+                 onPress={saveCode}
+               >
+                 <Text style={styles.textStyle}>Save</Text>
+               </Pressable>
+ 
+               <Pressable
+                 onPress={() => setShowmodal(!showModal)}
+               >
+                 <Text style={styles.textStyle}>Cancel</Text>
+               </Pressable>
+             </View>
+ 
+               */
+            }
 
+              <Text style={styles.msgText}>{msg}</Text>
 
-             <TextInput
-              label="Code"
-              returnKeyType="done"
-              value={code.value}
-              onChangeText={(text) => setCode({ value: text, error: '' })}
-              error={!!code.error}
-              errorText={code.error}
-              autoCapitalize="none"
-            />
-            <View style={styles.buttonContainer}>
-
-              <Pressable
-                onPress={saveCode}
-              >
-                <Text style={styles.textStyle}>Save</Text>
-              </Pressable>
-
-              <Pressable
-                onPress={() => setShowmodal(!showModal)}
-              >
-                <Text style={styles.textStyle}>Cancel</Text>
-              </Pressable>
-            </View>
-
-              */
-           } 
-           {
-             msg &&
-             
-              <Text style={styles.textStyle}>{msg}</Text>
-             
-           }
-           
             <TextInput
               label="Code"
               returnKeyType="done"
@@ -163,20 +167,25 @@ export default function AddBook({ navigation }) {
               errorText={code.error}
               autoCapitalize="none"
             />
-           
 
-             <Pressable
-                onPress={saveCode}
-              >
-                <Text style={styles.textStyle}>Save</Text>
-              </Pressable>
+
 
               <Pressable
-                onPress={() => setShowmodal(!showModal)}
-              >
-                <Text style={styles.textStyle}>Cancel</Text>
-              </Pressable>
-           
+              style={[styles.btn, styles.buttonSave]}
+              onPress={saveCode}
+              
+            >
+              <Text style={styles.textStyle}>Save</Text>
+            </Pressable>
+
+
+
+            <Pressable
+              style={[styles.btn, styles.buttonClose]}
+              onPress={cancelModal}
+            >
+              <Text style={styles.textStyle}>Cancel</Text>
+            </Pressable>
 
           </View>
         </View>
@@ -189,7 +198,7 @@ export default function AddBook({ navigation }) {
 
 const styles = StyleSheet.create({
   centeredView: {
-   
+
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -197,7 +206,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    width:"90%",
+    width: "90%",
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -224,10 +233,31 @@ const styles = StyleSheet.create({
   icon: {
     marginTop: 10,
   },
-  buttonContainer: {
-    flex: 1,
-    justifyContent: 'center'
+
+  btn: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    color:"#fff",
+  },
+  buttonSave: {
+    backgroundColor: "#581845",
+  },
+  buttonClose: {
+    backgroundColor: "#900c3f",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+
+  msgText:{
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center"
   }
+
 
 
 })

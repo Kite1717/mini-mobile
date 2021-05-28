@@ -1,5 +1,5 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, KeyboardAvoidingView,View } from 'react-native'
+import { ImageBackground, StyleSheet, KeyboardAvoidingView,View,ScrollView } from 'react-native'
 import { theme } from '../core/theme'
 import { Icon } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -15,7 +15,7 @@ export default function Background({ children,navigation }) {
     })
   }
   return (
-    <ImageBackground
+  <ImageBackground
       source={require('../assets/background_dot.png')}
       resizeMode="repeat"
       style={styles.background}
