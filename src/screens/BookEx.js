@@ -1,31 +1,60 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Background from '../components/Background'
 import Header from '../components/Header'
 import BackButton from '../components/BackButton'
 import { Icon } from 'react-native-elements'
-import { FlatList,TouchableOpacity, View, Text, StyleSheet ,SafeAreaView,StatusBar} from 'react-native'
+import { FlatList, TouchableOpacity, View, Text, StyleSheet, SafeAreaView, StatusBar } from 'react-native'
 import Button from '../components/Button'
+import axios from 'axios'
+
 
 export default function BookEx({ route, navigation }) {
 
   const { bookId } = route.params;
-  console.log(bookId,"asjkdgkhaskghfdgkasgdas")
+
+
+
+  const [data, setData] = useState([])
+  const [bookExTitle, setBookExTitle] = useState("")
+
+  useEffect(() => {
+    if (bookId)
+      getEx()
+
+  }, [bookId])
+
+  const getEx = async () => {
+
+    axios.get("https://mini-back-12.herokuapp.com/api/book-ex/" + bookId).then(({ data }) => {
+
+      setData(data.bookex)  // get book ex
+
+      if(data.bookex.length > 0 ){ // get book name
+
+        setBookExTitle(data.bookex[0].books.bookName)
+      }
+
+    })
+
+
+  }
+
   const renderItem = ({ item }) => {
 
     return (
 
       <View style={styles.container}>
-         <TouchableOpacity onPress={ () =>navigation.navigate('Exercise')}>
-        <View style={styles.bookContainer}>
-          <Icon
-            name='bookmark'
-            type='font-awesome'
-            color='#000'
-          />
-          <Text style={styles.title}>{item.title}</Text>
-        </View>
+        <TouchableOpacity onPress={() => navigation.navigate('Exercise',{ exercise: item })}>
+          <View style={styles.bookContainer}>
+            <Icon
+              name='bookmark'
+              type='font-awesome'
+              color='#000'
+            />
+            <Text style={styles.title}>{item.name}</Text>
+          </View>
 
-        <View style={styles.sep}></View>
+          <View style={styles.sep}></View>
         </TouchableOpacity>
       </View>
 
@@ -33,51 +62,35 @@ export default function BookEx({ route, navigation }) {
   };
 
 
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'DİL BECERİSİ',
-    },
-    {
-      id: 'asd-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'BÜTÜNSEL & GÖRSEL ALGI',
-    },
-    {
-      id: 'bd7acbasdasdea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'UZUN SÜRELİ DİKKAT ',
-    },
-
-   
-  ];
   return (
-    <Background navigation ={navigation}>
+    <Background navigation={navigation}>
       <BackButton goBack={navigation.goBack} />
-      <Header>MİNİPOİ 2-3 YAŞ KİTABI</Header>
-      <Text style = {styles.title}>Book Exercises</Text>
-      <View style = {styles.line}></View>
+      <Header>{bookExTitle}</Header>
+      <Text style={styles.title}>Book Exercises</Text>
+      <View style={styles.line}></View>
       <SafeAreaView style={styles.container}>
 
-      <FlatList
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        directionalLockEnabled
-      />
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={item => item.id +"-book-ex"}
+          directionalLockEnabled
+        />
 
-         
+
       </SafeAreaView>
 
       <Button
-          style={styles.button}
-          labelStyle={{ color: 'white' }}
-          mode="contained"
-          color="#C70039"
-          onPress={() => navigation.navigate('Chart')}
+        style={styles.button}
+        labelStyle={{ color: 'white' }}
+        mode="contained"
+        color="#C70039"
+        onPress={() => navigation.navigate('Chart')}
 
-        >
-          Show Progress Chart
+      >
+        Show Progress Chart
         </Button>
-    
+
     </Background>
   )
 }
@@ -109,16 +122,16 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     backgroundColor: "grey"
   },
-  line:{
-    marginTop:5,
-    marginBottom:5,
-    height:1,
-    width:'100%',
-    backgroundColor:'blue',
-    
+  line: {
+    marginTop: 5,
+    marginBottom: 5,
+    height: 1,
+    width: '100%',
+    backgroundColor: 'blue',
+
   },
-  button:{
-    marginBottom:30
+  button: {
+    marginBottom: 30
   }
 
 

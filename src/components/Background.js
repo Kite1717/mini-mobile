@@ -66,10 +66,12 @@ const styles = StyleSheet.create({
   },
   logout:{
 
-    marginTop:100,
-    marginLeft:100,
+   
+    marginTop:50,
+    marginLeft:250,
   },
   logoutContainer:{
-    position:'relative'
+    position:'relative',
+
   }
 })

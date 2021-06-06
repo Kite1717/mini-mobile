@@ -42,6 +42,7 @@ export default function Blog({ navigation }) {
       }
       <FlatList
         data={data}
+        showsVerticalScrollIndicator={false}
         renderItem={renderItem}
         keyExtractor={item => item.id + "-blog"}
       />
