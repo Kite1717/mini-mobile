@@ -51,6 +51,8 @@ export default function BookEx({ route, navigation }) {
               type='font-awesome'
               color='#000'
             />
+           
+            <Text style={styles.att}>{item.exerciseAttainmentName}</Text>
             <Text style={styles.title}>{item.name}</Text>
           </View>
 
@@ -112,7 +114,14 @@ const styles = StyleSheet.create({
   title: {
     color: "blue",
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 12,
+    marginVertical: 10,
+    marginLeft: 10,
+  },
+  att: {
+    color: "grey",
+    fontWeight: 'bold',
+    fontSize: 12,
     marginVertical: 10,
     marginLeft: 10,
   },
