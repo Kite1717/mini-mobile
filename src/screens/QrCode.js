@@ -46,13 +46,13 @@ export default function QrCode({ navigation }) {
         headers: { Authorization: `Bearer ${token}` }
       };
 
-     axios.get("https://mini-back-12.herokuapp.com/api/user/me", config).then(({ data }) => {
+     axios.get("http://localhost:4000/api/user/me", config).then(({ data }) => {
 
         let postData = {
           code: code,
           userId: data.user.id
         }
-        axios.post("https://mini-back-12.herokuapp.com/api/code/add-book", postData).then(({ data }) => {
+        axios.post("http://localhost:4000/api/code/add-book", postData).then(({ data }) => {
   
           if (data.msg === "success") {
   

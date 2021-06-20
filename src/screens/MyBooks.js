@@ -6,23 +6,21 @@ import { Icon } from 'react-native-elements'
 import { FlatList,View,Text,StyleSheet,SafeAreaView,TouchableOpacity,StatusBar} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
-export default function MyBooks({ navigation }) {
 
+export default function MyBooks({route, navigation }) {
+
+
+  
   const renderItem = ({ item }) => {
 
+
+    
     return (
     
       <View style={styles.container}>
           <TouchableOpacity onPress={ () =>navigation.navigate('BookExercises',{ bookId: item.books.id })}>
         <View style={styles.bookContainer}>
-
-        <Icon
-        name='book'
-        type='font-awesome'
-        color='#000'
-      />
-
-
+        <Text style ={styles.percentage}>{item.percentage} % </Text>
       <Text style ={styles.title}>{item.books.bookName}</Text>
         </View>
         
@@ -37,12 +35,14 @@ export default function MyBooks({ navigation }) {
   const [data,setData]  =useState([])
 
   useEffect(() => {
+
+   
     getInfo()
 
      
 
 
-  }, [])
+  }, [route])
 
 
 
@@ -55,12 +55,38 @@ export default function MyBooks({ navigation }) {
         headers: { Authorization: `Bearer ${token}` }
       };
 
-       axios.get("https://mini-back-12.herokuapp.com/api/user/me",config).then((res)=>{
+       axios.get("http://localhost:4000/api/user/me",config).then((res)=>{
 
        let id = res.data.user.id
 
-        axios.get("https://mini-back-12.herokuapp.com/api/book/" + id).then(({data})=>{
+        axios.get("http://localhost:4000/api/book/" + id).then(async({data})=>{
 
+
+        for(let i = 0 ; i< data.ubook.length ; i++)
+        {
+          
+          await axios.post("http://localhost:4000/api/book-ex/all-ex-with-check/",{userId:id,bookId:  data.ubook[i].bookId}).then((response) => {
+
+
+          const exs = response.data.bookex
+
+          let correctCount = 0 ;
+          exs.forEach(element => {
+            
+            if(element.status===1)
+            {
+              correctCount++
+            }
+          });
+
+        
+          data.ubook[i].percentage = (((correctCount / exs.length))*100).toFixed(2)
+
+           
+
+          })
+
+        }
 
 
      
@@ -116,6 +142,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
   },
+  percentage:{
+    fontSize:15,
+    fontWeight:'bold',
+    color : '#10E837'
+  }
 
 
 })

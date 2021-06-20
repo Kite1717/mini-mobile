@@ -6,6 +6,7 @@ import { Icon } from 'react-native-elements'
 import { FlatList, TouchableOpacity, View, Text, StyleSheet, SafeAreaView, StatusBar } from 'react-native'
 import Button from '../components/Button'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function BookEx({ route, navigation }) {
@@ -17,15 +18,47 @@ export default function BookEx({ route, navigation }) {
   const [data, setData] = useState([])
   const [bookExTitle, setBookExTitle] = useState("")
 
+  const [userId,setUserId]  =useState(null)
+
   useEffect(() => {
-    if (bookId)
+   
+    getUserId()
+
+
+  }, [])
+  useEffect(() => {
+    if (bookId && userId)
       getEx()
 
-  }, [bookId])
+  }, [bookId,userId])
+
+
+  const getUserId = async() =>{
+
+    const token = await AsyncStorage.getItem("@token")
+    if(token !== null)
+    {
+
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+
+       axios.get("http://localhost:4000/api/user/me",config).then((res)=>{
+
+        setUserId(res.data.user.id)
+      
+      })
+    }
+  }
+
 
   const getEx = async () => {
 
-    axios.get("https://mini-back-12.herokuapp.com/api/book-ex/" + bookId).then(({ data }) => {
+    let reqBody = {
+      userId,
+      bookId,
+    }
+    axios.post("http://localhost:4000/api/book-ex/all-ex-with-check/",reqBody).then(({ data }) => {
 
       setData(data.bookex)  // get book ex
 
@@ -46,11 +79,15 @@ export default function BookEx({ route, navigation }) {
       <View style={styles.container}>
         <TouchableOpacity onPress={() => navigation.navigate('Exercise',{ exercise: item })}>
           <View style={styles.bookContainer}>
-            <Icon
-              name='bookmark'
-              type='font-awesome'
-              color='#000'
-            />
+         
+        <Icon
+          name={item.status === 0 ? 'square' : item.status === 1 ? 'check' :item.status === 2 ? 'times' : ''}
+          type='font-awesome'
+        
+          color={item.status === 0 ? '#ccc' : item.status === 1 ? '#10E837' :item.status === 2 ? '#E81010' : ''}
+          
+        />
+
            
             <Text style={styles.att}>{item.exerciseAttainmentName}</Text>
             <Text style={styles.title}>{item.name}</Text>

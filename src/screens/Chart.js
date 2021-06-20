@@ -29,11 +29,11 @@ export default function BookEx({ navigation }) {
         headers: { Authorization: `Bearer ${token}` }
       };
 
-      axios.get("https://mini-back-12.herokuapp.com/api/user/me", config).then((res) => {
+      axios.get("http://localhost:4000/api/user/me", config).then((res) => {
 
         let id = res.data.user.id
 
-        axios.get("https://mini-back-12.herokuapp.com/api/user-stat/" + id).then(({ data }) => {
+        axios.get("http://localhost:4000/api/user-stat/" + id).then(({ data }) => {
 
           setChartInfo(data.ex)
 

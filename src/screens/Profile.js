@@ -38,7 +38,7 @@ export default function Profile({ navigation }) {
         headers: { Authorization: `Bearer ${token}` }
       };
 
-      axios.get("https://mini-back-12.herokuapp.com/api/user/me",config).then(({data})=>{
+      axios.get("http://localhost:4000/api/user/me",config).then(({data})=>{
   
       setUser(data.user)
       })
@@ -72,7 +72,7 @@ export default function Profile({ navigation }) {
       const config = {
         headers: { Authorization: `Bearer ${token}` }
       };
-      axios.put("https://mini-back-12.herokuapp.com/api/user/change-password",{
+      axios.put("http://localhost:4000/api/user/change-password",{
         oldPass : oldPass.value,
         newPass : newPass.value,
       },config).then(async (res)=>{

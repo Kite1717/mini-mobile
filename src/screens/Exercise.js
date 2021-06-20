@@ -8,7 +8,7 @@ import { Icon } from 'react-native-elements'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const imgRootUrl = "https://mini-back-12.herokuapp.com/"
+const imgRootUrl = "http://localhost:4000/"
 
 
 
@@ -18,111 +18,83 @@ export default function Exercise({ route, navigation }) {
   const { exercise } = route.params;
 
   const [info, setInfo] = useState(null)
+  const [userId,setUserId]  =useState(null)
   useEffect(() => {
     setInfo(exercise)
 
   }, [exercise])
 
+  useEffect(() => {
+   
+    getUserId()
 
+
+  }, [])
+
+  const getUserId = async() =>{
+
+    const token = await AsyncStorage.getItem("@token")
+    if(token !== null)
+    {
+
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+
+       axios.get("http://localhost:4000/api/user/me",config).then((res)=>{
+
+        setUserId(res.data.user.id)
+      
+      })
+    }
+  }
 
   const checkProcess = async ()=>{
 
-    if(info)
+    if(info && userId)
     {
+      axios.put("http://localhost:4000/api/user-stat/stat-update",{amount : parseInt(info.contScore),userId ,name :info.exerciseAttainmentName }).then(async ()=>{
+  
+        
+         upsertUserAnswer(info.id,userId,true)
+        Alert.alert(
+          "Success",
+          "Your answer is correct.You can check progress chart.",
+        );
 
-      const token = await AsyncStorage.getItem("@token")
-      if (token !== null) {
-  
-        const config = {
-          headers: { Authorization: `Bearer ${token}` }
-        };
-  
-        axios.get("https://mini-back-12.herokuapp.com/api/user/me", config).then((res) => {
-  
-          let id = res.data.user.id
-  
-          axios.put("https://mini-back-12.herokuapp.com/api/user-stat/stat-update",{amount : parseInt(info.contScore),userId : id,name :info.exerciseAttainmentName }).then(()=>{
-  
-  
-            Alert.alert(
-              "Success",
-              "Your answer is correct.You can check progress chart.",
-            );
-    
-          }).catch((e)=>{
-            Alert.alert(
-              "Warning",
-              e.response.data,
-            );
-          })
-  
-        })
-      }
+        navigation.navigate('MyBooks')
+        
+
+      }).catch((e)=>{
+        Alert.alert(
+          "Warning",
+          e.response.data,
+        );
+      })
       
     }
   }
 
 
   //check excercise failure process 
-  const decideBackProcess = () =>{
+  const decideBackProcess = async () =>{
 
+    
+    if(info && userId){
 
-    if(info){
-
-      if(info.exerciseOrderNo <=5) // 5
-      {
-
-          Alert.alert(
-              "Info",
-              "Please try to solve the exercise again.",
-            );
-      }
-      else if(info.exerciseOrderNo === 6)
-      {
-        Alert.alert(
-          "Info",
-          "You should reinforce the attainment via solving exercise 1",
-        );
-      }
-     
-      else if(info.exerciseOrderNo === 7)
-      {
-        Alert.alert(
-          "Info",
-          "You should reinforce the attainment via solving exercise 2",
-        );
-      }
-      else if(info.exerciseOrderNo === 8)
-      {
-        Alert.alert(
-          "Info",
-          "You should reinforce the attainment via solving exercise 3",
-        );
-      }
-      else if(info.exerciseOrderNo === 9)
-      {
-        Alert.alert(
-          "Info",
-          "You should reinforce the attainment via solving exercise 4",
-        );
-      }
-
-      else if(info.exerciseOrderNo === 10)
-      {
-        Alert.alert(
-          "Info",
-          "You should reinforce the attainment via solving exercise 5",
-        );
-      }
-      else if(info.exerciseOrderNo === 11)
-      {
-        Alert.alert(
-          "Info",
-          "You should reinforce the attainment via solving exercise 10",
-        );
-      }
+       upsertUserAnswer(info.id,userId,false)
+      Alert.alert(
+        "Info",
+        "Please try to solve the exercise again.",
+      );
+      navigation.navigate('MyBooks')
     }
 
+  }
+
+  const upsertUserAnswer = async (exerciseId,userId,status)=>
+  {
+    return axios.post("http://localhost:4000/api/answers/upsert",{exerciseId, userId,status})
   }
 
   return (
@@ -146,29 +118,37 @@ export default function Exercise({ route, navigation }) {
             <Text style={styles.des}>{info.exerciseAttainmentDes}</Text>
           </View>
 
-          <Text style={styles.corTitle}>Is the answer correct ? </Text>
+       
 
-          <View style={styles.corContainer}>
+            {
+              info && info.status !== 1 &&
+              <>
+                 <Text style={styles.corTitle}>Is the answer correct ? </Text>
+                 <View style={styles.corContainer}>
+                <TouchableOpacity onPress={() => decideBackProcess()}>
+                  <Icon
+                    name='times'
+                    type='font-awesome'
+                    size={100}
+                    color='#E81010'
+                    style={styles.wrong}
+                  />
+                </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => decideBackProcess()}>
-              <Icon
-                name='times'
-                type='font-awesome'
-                size={100}
-                color='#E81010'
-                style={styles.wrong}
-              />
-            </TouchableOpacity>
+                <TouchableOpacity onPress={() => checkProcess()}>
+                  <Icon
+                    name='check'
+                    type='font-awesome'
+                    size={100}
+                    color='#10E837'
+                  />
+                </TouchableOpacity>
+                </View>
+              </>
+             
 
-            <TouchableOpacity onPress={() => checkProcess()}>
-              <Icon
-                name='check'
-                type='font-awesome'
-                size={100}
-                color='#10E837'
-              />
-            </TouchableOpacity>
-          </View>
+            }
+        
         </>
       }
 
