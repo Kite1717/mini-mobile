@@ -8,7 +8,7 @@ import { Icon } from 'react-native-elements'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const imgRootUrl = "http://localhost:4000/"
+const imgRootUrl = "https://mini-back-12.herokuapp.com/"
 
 
 
@@ -41,7 +41,7 @@ export default function Exercise({ route, navigation }) {
         headers: { Authorization: `Bearer ${token}` }
       };
 
-       axios.get("http://localhost:4000/api/user/me",config).then((res)=>{
+       axios.get("https://mini-back-12.herokuapp.com/api/user/me",config).then((res)=>{
 
         setUserId(res.data.user.id)
       
@@ -53,7 +53,7 @@ export default function Exercise({ route, navigation }) {
 
     if(info && userId)
     {
-      axios.put("http://localhost:4000/api/user-stat/stat-update",{amount : parseInt(info.contScore),userId ,name :info.exerciseAttainmentName }).then(async ()=>{
+      axios.put("https://mini-back-12.herokuapp.com/api/user-stat/stat-update",{amount : parseInt(info.contScore),userId ,name :info.exerciseAttainmentName }).then(async ()=>{
   
         
          upsertUserAnswer(info.id,userId,true)
@@ -94,7 +94,7 @@ export default function Exercise({ route, navigation }) {
 
   const upsertUserAnswer = async (exerciseId,userId,status)=>
   {
-    return axios.post("http://localhost:4000/api/answers/upsert",{exerciseId, userId,status})
+    return axios.post("https://mini-back-12.herokuapp.com/api/answers/upsert",{exerciseId, userId,status})
   }
 
   return (

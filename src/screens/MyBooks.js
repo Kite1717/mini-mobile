@@ -55,17 +55,17 @@ export default function MyBooks({route, navigation }) {
         headers: { Authorization: `Bearer ${token}` }
       };
 
-       axios.get("http://localhost:4000/api/user/me",config).then((res)=>{
+       axios.get("https://mini-back-12.herokuapp.com/api/user/me",config).then((res)=>{
 
        let id = res.data.user.id
 
-        axios.get("http://localhost:4000/api/book/" + id).then(async({data})=>{
+        axios.get("https://mini-back-12.herokuapp.com/api/book/" + id).then(async({data})=>{
 
 
         for(let i = 0 ; i< data.ubook.length ; i++)
         {
           
-          await axios.post("http://localhost:4000/api/book-ex/all-ex-with-check/",{userId:id,bookId:  data.ubook[i].bookId}).then((response) => {
+          await axios.post("https://mini-back-12.herokuapp.com/api/book-ex/all-ex-with-check/",{userId:id,bookId:  data.ubook[i].bookId}).then((response) => {
 
 
           const exs = response.data.bookex

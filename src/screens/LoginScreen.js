@@ -32,7 +32,7 @@ export default function LoginScreen({ navigation }) {
       email : email.value,
     }
 
-    axios.post("http://localhost:4000/api/user/login",data).then((res)=>{
+    axios.post("https://mini-back-12.herokuapp.com/api/user/login",data).then((res)=>{
 
 
       storeData("@token",res.data.token).then(()=>{

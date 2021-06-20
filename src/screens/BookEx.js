@@ -43,7 +43,7 @@ export default function BookEx({ route, navigation }) {
         headers: { Authorization: `Bearer ${token}` }
       };
 
-       axios.get("http://localhost:4000/api/user/me",config).then((res)=>{
+       axios.get("https://mini-back-12.herokuapp.com/api/user/me",config).then((res)=>{
 
         setUserId(res.data.user.id)
       
@@ -58,7 +58,7 @@ export default function BookEx({ route, navigation }) {
       userId,
       bookId,
     }
-    axios.post("http://localhost:4000/api/book-ex/all-ex-with-check/",reqBody).then(({ data }) => {
+    axios.post("https://mini-back-12.herokuapp.com/api/book-ex/all-ex-with-check/",reqBody).then(({ data }) => {
 
       setData(data.bookex)  // get book ex
 
