@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function BookEx({ route, navigation }) {
 
-  const { bookId } = route.params;
+  const { bookId,refresh } = route.params;
 
 
 
@@ -32,6 +32,12 @@ export default function BookEx({ route, navigation }) {
 
   }, [bookId,userId])
 
+  useEffect(() => {
+    if(refresh)
+    {
+      getEx()
+    }
+  }, [refresh])
 
   const getUserId = async() =>{
 
@@ -77,7 +83,7 @@ export default function BookEx({ route, navigation }) {
     return (
 
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.navigate('Exercise',{ exercise: item })}>
+        <TouchableOpacity onPress={() => navigation.navigate('Exercise',{ exercise: item ,bookId})}>
           <View style={styles.bookContainer}>
          
         <Icon
@@ -103,7 +109,9 @@ export default function BookEx({ route, navigation }) {
 
   return (
     <Background navigation={navigation}>
-      <BackButton goBack={navigation.goBack} />
+      <BackButton goBack={()=>{
+        navigation.navigate('MyBooks',{ refresh:Math.random()*1000})}
+      } />
       <Header>{bookExTitle}</Header>
       <Text style={styles.title}>Book Exercises</Text>
       <View style={styles.line}></View>

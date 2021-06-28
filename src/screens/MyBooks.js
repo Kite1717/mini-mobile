@@ -10,7 +10,21 @@ import axios from 'axios'
 export default function MyBooks({route, navigation }) {
 
 
+
+  const { refresh } = route.params;
   
+  useEffect(() => {
+      if(refresh)
+      {
+        getInfo()
+      }
+  }, [refresh])
+
+  useEffect(() => {
+ 
+      getInfo()
+    
+}, [])
   const renderItem = ({ item }) => {
 
 
@@ -34,15 +48,7 @@ export default function MyBooks({route, navigation }) {
 
   const [data,setData]  =useState([])
 
-  useEffect(() => {
-
-   
-    getInfo()
-
-     
-
-
-  }, [route])
+ 
 
 
 
@@ -82,14 +88,10 @@ export default function MyBooks({route, navigation }) {
         
           data.ubook[i].percentage = (((correctCount / exs.length))*100).toFixed(2)
 
-           
-
           })
 
         }
 
-
-     
           setData(data.ubook)
          
         })

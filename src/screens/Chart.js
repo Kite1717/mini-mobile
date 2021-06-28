@@ -35,6 +35,7 @@ export default function BookEx({ navigation }) {
 
         axios.get("https://mini-back-12.herokuapp.com/api/user-stat/" + id).then(({ data }) => {
 
+
           setChartInfo(data.ex)
 
           setChartData(data.ex)
