@@ -36,7 +36,7 @@ export default function Exercise({ route, navigation }) {
     const token = await AsyncStorage.getItem("@token")
     if(token !== null)
     {
-
+      
       const config = {
         headers: { Authorization: `Bearer ${token}` }
       };
@@ -62,7 +62,7 @@ export default function Exercise({ route, navigation }) {
           "Your answer is correct.You can check progress chart.",
         );
 
-        navigation.navigate('BookExercises',{refresh:true,bookId})
+        navigation.navigate('BookExercises',{refresh:Math.random(),bookId})
         
 
       }).catch((e)=>{
@@ -87,7 +87,7 @@ export default function Exercise({ route, navigation }) {
         "Info",
         "Please try to solve the exercise again.",
       );
-      navigation.navigate('BookExercises',{refresh:true,bookId})
+      navigation.navigate('BookExercises',{refresh:Math.random(),bookId})
     }
 
   }

@@ -33,6 +33,7 @@ export default function BookEx({ route, navigation }) {
   }, [bookId,userId])
 
   useEffect(() => {
+  
     if(refresh)
     {
       getEx()
@@ -128,11 +129,12 @@ export default function BookEx({ route, navigation }) {
       </SafeAreaView>
 
       <Button
+      disabled={data.length === 0 || !data }
         style={styles.button}
         labelStyle={{ color: 'white' }}
         mode="contained"
         color="#C70039"
-        onPress={() => navigation.navigate('Chart')}
+        onPress={() => navigation.navigate('Chart',{exData : data.filter((item) => item.status === 1)})}
 
       >
         Show Progress Chart
